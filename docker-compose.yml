@@ -1,0 +1,63 @@
+version: "3"
+
+services:
+  front:
+    container_name: tmp_next
+    build: ./docker/next
+    volumes:
+      - ./next:/next
+    tty: true
+    ports:
+      - 8080:8080
+    depends_on:
+      - api
+    command: yarn dev
+
+  storybook:
+    container_name: tmp_storybook
+    build: ./docker/next
+    volumes:
+      - ./next:/next
+    tty: true
+    ports:
+      - "6006:6006"
+    environment:
+      - NODE_ENV=development
+    command: "yarn storybook:docker"
+
+  api:
+    container_name: tmp_nest
+    build: ./docker/nest
+    tty: true
+    ports:
+      - 3000:3000
+    volumes:
+      - "./nest:/nest"
+    depends_on:
+      - db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    command: yarn start:dev
+
+  db:
+    container_name: tmp_mysql
+    image: mysql:8.0
+    volumes:
+      - nest_data:/var/lib/mysql
+      - ./db/logs:/var/log/mysql
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=${TZ}
+    ports:
+      - 3306:3306
+    platform: linux/x86_64
+
+volumes:
+  nest_data:
