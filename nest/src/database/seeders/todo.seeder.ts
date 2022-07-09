@@ -1,6 +1,6 @@
 import { Connection } from 'typeorm'
 import { Factory, Seeder } from 'typeorm-seeding'
-import { Todos } from '../../entity/todo.entity'
+import { Todo } from '../../entity/todo.entity'
 import { todos } from '../seeds/todo.seed'
 
 export class CreateTodo implements Seeder {
@@ -8,7 +8,7 @@ export class CreateTodo implements Seeder {
     await connection
       .createQueryBuilder()
       .insert()
-      .into(Todos)
+      .into(Todo)
       .values(todos)
       .execute()
   }
