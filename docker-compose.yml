@@ -2,7 +2,7 @@ version: "3"
 
 services:
   front:
-    container_name: tmp_next
+    container_name: lesson_next
     build: ./docker/next
     volumes:
       - ./next:/next
@@ -14,7 +14,7 @@ services:
     command: yarn dev
 
   storybook:
-    container_name: tmp_storybook
+    container_name: lesson_storybook
     build: ./docker/next
     volumes:
       - ./next:/next
@@ -26,7 +26,7 @@ services:
     command: "yarn storybook:docker"
 
   api:
-    container_name: tmp_nest
+    container_name: lesson_nest
     build: ./docker/nest
     tty: true
     ports:
@@ -43,10 +43,10 @@ services:
     command: yarn start:dev
 
   db:
-    container_name: tmp_mysql
+    container_name: lesson_mysql
     image: mysql:8.0
     volumes:
-      - nest_data:/var/lib/mysql
+      - resson_nest-next-clud:/var/lib/mysql
       - ./db/logs:/var/log/mysql
       - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
     environment:
@@ -60,4 +60,4 @@ services:
     platform: linux/x86_64
 
 volumes:
-  nest_data:
+  resson_nest-next-clud:
