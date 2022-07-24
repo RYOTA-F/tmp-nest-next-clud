@@ -119,6 +119,20 @@ $ docker-compose run --rm api yarn nest g controller {module_name}
 $ docker-compose run --rm api yarn nest g service {module_name}
 ```
 
+### Aspida
+
+### Copy Swagger JSON
+
+```sh
+$ cp ./nest/swagger-spec.json ./next/swagger-spec.json
+```
+
+### Generate API Definition
+
+```sh
+$ docker-compose run --rm front npx openapi2aspida -i swagger-spec.json
+```
+
 ---
 
 ## Lint
